@@ -1,6 +1,20 @@
 #include <iostream>
 #include <string>
+#include <Windows.h>
 using namespace std;
+
+const string alpha = "абвгдежзиклмнопрстуфхцчшщэюя";
+
+bool is_ru_upper(char c) {
+	return (c >= 'А') && (c <= 'Я');
+}
+
+char to_lower(char& a) {
+	if (is_ru_upper(a)) {
+		a = a - 'Я' + 'я';
+	}
+	return a;
+}
 
 string yearToTrack(int n, string t[]) {
 	int a = n / 1000 + (n / 100) % 10 + (n / 10) % 10 + n % 10;
@@ -9,17 +23,18 @@ string yearToTrack(int n, string t[]) {
 }
 
 string nameToFilm(string name, string f[]) {
-	int n = (int)name[0] + 128;
+	int n = alpha.find(to_lower(name[0]));
 	return f[n];
 }
 
 string surnameToVip(string surname, string v[]) {
-	int n = (int)surname[0] + 128;
+	int n = alpha.find(to_lower(surname[0]));
 	return v[n];
 }
 
 int main() {
-	setlocale(LC_ALL, "Russian");
+	SetConsoleCP(1251);
+	SetConsoleOutputCP(1251);
 	string films[28] = {"Бесславные ублюдки", "Проклятый остров", "Шрек", "Убить Билла", "Человек-паук", "Карты, деньги, два ствола", "Операция Ы", "Ирония судьбы",
 					    "Маска", "Железный человек", "Аватар", "Гарри Поттер и узник Азкабана", "Гарри Поттер и Кубок Огня", "Гарри Поттер и Орден Феникса",
 						"Джентельмены удачи", "Брюс Всемогущий", "Шоу Трумана", "Один дома", "Хроники Нарнии", "Зелёный слоник", "Начало", "Титаник", "Люди Икс",
@@ -44,7 +59,8 @@ int main() {
 	cout << "Год рождения: ";
 	cin >> year;
 	cout << "Супер! Ваш фильм - это " + nameToFilm(name, films) + ". Ваша звезда - " + surnameToVip(surname, vips) + "!" << endl <<
-		"Саундтрек для вас на сегодня - " + yearToTrack(stoi(year), tracks) + "." << endl;
-	
+		"Саундтрек для вас на сегодня - " + yearToTrack(stoi(year), tracks) + "." << endl; 
+	//char a = 'И';
+	//cout << to_lower(a);
 	return 0;
 }
